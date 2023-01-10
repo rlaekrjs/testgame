@@ -11,13 +11,13 @@ public class monster_parents : MonoBehaviour
     protected float monster_speed = 1;
     void Start()
     {
-        
+      
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     void OnTriggerEnter2D(Collider2D collisionInfo)
