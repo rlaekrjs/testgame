@@ -7,7 +7,8 @@ public class playerMove : MonoBehaviour
     [SerializeField]
     float v_speed = 0.1f;
     Vector2 speedNomal;
-    int playerHP = 10;
+    public int playerHP = 10;
+    public int gauge;
     void Start()
     {
      
@@ -19,11 +20,18 @@ public class playerMove : MonoBehaviour
 
     void Update()
     {
+        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
+        if (pos.x < 0f) pos.x = 0f;
+        if (pos.x > 1f) pos.x = 1f;
+        if (pos.y < 0f) pos.y = 0f;
+        if (pos.y > 1f) pos.y = 1f;
+        transform.position = Camera.main.ViewportToWorldPoint(pos);
     }
     private void FixedUpdate()
     {
         moveControl();     
     }
+
     void moveControl()
     {
         float h = Input.GetAxis("Horizontal");
@@ -50,6 +58,27 @@ public class playerMove : MonoBehaviour
             if (playerHP <= 0)
                 Destroy(gameObject);
             //체력이 0이하일때 몬스터 파괴
+        }
+        if (collisionInfo.gameObject.tag.Equals("food"))
+        {
+            //플레이어가 음식을 먹었을때 체력 회복
+            if (playerHP < 10)
+            {
+                playerHP++;
+                Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(false);
+            }
+            Destroy(collisionInfo.gameObject);
+        }
+        if (collisionInfo.gameObject.CompareTag("monster"))
+        {
+            //플레이어가 몬스터와 충돌시 몬스터 파괴 고통게이지 증가 체력 감소
+            playerHP--;
+            Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
+            if (Gamemanager.instance_.GetComponent<pain_gauge>().gauge.value >= 1)
+            {
+                Destroy(gameObject);
+            }
+            Destroy(collisionInfo.gameObject);
         }
     }
 }

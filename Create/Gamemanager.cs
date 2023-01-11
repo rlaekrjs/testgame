@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gamemanager : MonoBehaviour
 {
     private static Gamemanager instance = null;
     public playerMove player;
+    public int score;
+    public Text text;
+    public Userlnterface Heal;
+    private void Start()
+    {
+        SetText();
+    }
     void Awake()
     {
         //½Ì±ÛÅæ »ý¼º
@@ -24,6 +32,10 @@ public class Gamemanager : MonoBehaviour
             }
             return instance;
         }
+    }
+    public void SetText()
+    {
+        text.text = "Score : " + score.ToString();
     }
     // Update is called once per frame
     void Update()

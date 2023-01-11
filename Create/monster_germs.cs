@@ -21,7 +21,7 @@ public class monster_germs : monster_parents
     }
     void FixedUpdate()
     {
-        transform.localPosition += new Vector3(0, 0, 0);
+        transform.localPosition += new Vector3(0, -0.01f, 0);
         if (Time.time > nextfireQ)
             fire();
 

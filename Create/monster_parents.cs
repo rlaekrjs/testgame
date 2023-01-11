@@ -5,7 +5,6 @@ using UnityEngine;
 public class monster_parents : MonoBehaviour
 {
     [SerializeField]
-
     protected int monster_HP = 10;
 
     protected float monster_speed = 1;
@@ -29,8 +28,12 @@ public class monster_parents : MonoBehaviour
             Destroy(collisionInfo.gameObject);
             //충돌한 총알 파괴
             if (monster_HP <= 0)
-            Destroy(gameObject);
-            //체력이 0이하일때 몬스터 파괴
+            {
+                Gamemanager.instance_.score += 500;
+                Destroy(gameObject);
+                Gamemanager.instance_.SetText();
+
+            }//체력이 0이하일때 몬스터 파괴
         }
     }
 }
