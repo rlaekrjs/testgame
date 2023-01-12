@@ -16,7 +16,7 @@ public class moveb : MonoBehaviour
     void Update()
     {
         float moveY = bullet_speed * Time.deltaTime;
-
         transform.Translate(0, moveY, 0);
+
     }
 }

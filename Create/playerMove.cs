@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class playerMove : MonoBehaviour
 {
+    
     [SerializeField]
     float v_speed = 0.1f;
     Vector2 speedNomal;
@@ -20,17 +21,20 @@ public class playerMove : MonoBehaviour
 
     void Update()
     {
+        //플레이어 맵 이탈 막는 코드
         Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
         if (pos.x < 0f) pos.x = 0f;
         if (pos.x > 1f) pos.x = 1f;
         if (pos.y < 0f) pos.y = 0f;
         if (pos.y > 1f) pos.y = 1f;
         transform.position = Camera.main.ViewportToWorldPoint(pos);
+
         //고통게이지가 꽉 차면 플레이어 사망
         if (Gamemanager.instance_.GetComponent<pain_gauge>().gauge.value >= 1)
         {
             Destroy(gameObject);
         }
+
     }
     private void FixedUpdate()
     {
@@ -78,6 +82,8 @@ public class playerMove : MonoBehaviour
         {
             //플레이어가 몬스터와 충돌시 몬스터 파괴 고통게이지 증가 체력 감소
             playerHP--;
+            Debug.Log(playerHP);
+            Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
             Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
             Destroy(collisionInfo.gameObject);
         }

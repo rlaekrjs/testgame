@@ -15,7 +15,7 @@ public class spawnmonster : MonoBehaviour
     void Update()
     {
         currTime += Time.deltaTime;
-        Debug.Log(currTime);
+        //Debug.Log(currTime);
         if (currTime > 7)
         {
             Vector3 spawnPos = new Vector3(Random.Range(-spawnRangeX,

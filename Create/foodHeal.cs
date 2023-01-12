@@ -9,7 +9,6 @@ public class foodHeal : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-                Gamemanager.instance_.player.playerHP++;
             Destroy(gameObject);
         }
     }

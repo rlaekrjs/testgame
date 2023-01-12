@@ -6,7 +6,7 @@ public class fire_bullet : MonoBehaviour
 {
     [SerializeField]
 
-    GameObject bullet;
+    public GameObject bullet;
     [SerializeField]
 
     float shootDelay = 0.5f;
@@ -25,6 +25,8 @@ public class fire_bullet : MonoBehaviour
         {
             Instantiate(bullet, transform.position, Quaternion.identity);
             latetime = Time.time + shootDelay;
+
         }
+
     }
 }

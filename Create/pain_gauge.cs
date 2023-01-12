@@ -22,7 +22,13 @@ public class pain_gauge : MonoBehaviour
         if (a)
         {
             gauge.value += 0.2f;
+
         }
-        else gauge.value -= 0.2f;
+        else
+        {
+            
+            gauge.value += 0.2f;
+
+        }
     }
 }
