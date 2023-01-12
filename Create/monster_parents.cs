@@ -6,19 +6,43 @@ public class monster_parents : MonoBehaviour
 {
     [SerializeField]
     protected int monster_HP = 10;
+    [SerializeField]
+    protected float monster_speed = 0.02f;
 
-    protected float monster_speed = 1;
-    void Start()
+    public float nextfireQ, firerateQ = 0.1f;
+    public float random = 0, Bulletspeed = 10;
+    [SerializeField]
+    protected GameObject bullet;
+    protected Transform player;
+    protected void Start()
     {
-      
+        player = Gamemanager.instance_.player.transform;
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
        
     }
+    protected void FixedUpdate()
+    {
+        transform.localPosition += new Vector3(0, -monster_speed, 0);
+        if (Time.time > nextfireQ)
+            fire();
 
+    }
+    protected virtual void fire()
+    {
+        nextfireQ = Time.time + firerateQ + Random.Range(0.3f, 1.0f);
+        GameObject inst = Instantiate(bullet);
+        inst.transform.position = transform.position;
+        //Debug.Log((Vector2)player.transform.position);
+        inst.GetComponent<enemy_bullet>().toVector = Gamemanager.VectorRotation(
+            Gamemanager.PointDirection(transform.position, player.transform.position)
+            + Random.Range(-random, random));
+        inst.GetComponent<enemy_bullet>().speed = Bulletspeed;
+
+    }
     void OnTriggerEnter2D(Collider2D collisionInfo)
     {
         if(collisionInfo.gameObject.CompareTag("bullet"))
@@ -34,6 +58,12 @@ public class monster_parents : MonoBehaviour
                 Gamemanager.instance_.SetText();
 
             }//체력이 0이하일때 몬스터 파괴
+        }
+        if (collisionInfo.gameObject.CompareTag("kill box"))
+        {
+            Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
+            
+            Destroy(gameObject);
         }
     }
 }

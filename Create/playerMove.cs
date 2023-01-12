@@ -26,6 +26,11 @@ public class playerMove : MonoBehaviour
         if (pos.y < 0f) pos.y = 0f;
         if (pos.y > 1f) pos.y = 1f;
         transform.position = Camera.main.ViewportToWorldPoint(pos);
+        //고통게이지가 꽉 차면 플레이어 사망
+        if (Gamemanager.instance_.GetComponent<pain_gauge>().gauge.value >= 1)
+        {
+            Destroy(gameObject);
+        }
     }
     private void FixedUpdate()
     {
@@ -74,10 +79,6 @@ public class playerMove : MonoBehaviour
             //플레이어가 몬스터와 충돌시 몬스터 파괴 고통게이지 증가 체력 감소
             playerHP--;
             Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
-            if (Gamemanager.instance_.GetComponent<pain_gauge>().gauge.value >= 1)
-            {
-                Destroy(gameObject);
-            }
             Destroy(collisionInfo.gameObject);
         }
     }

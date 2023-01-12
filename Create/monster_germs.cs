@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class monster_germs : monster_parents
 {
-    public float nextfireQ, firerateQ = 0.1f;
-    public float random = 0, Bulletspeed = 10;
-    [SerializeField]
-    private GameObject bullet;
-    Transform player;
+
+
+
     void Start()
     {
-        player = Gamemanager.instance_.player.transform;
+        base.Start();
     }
 
     // Update is called once per frame
@@ -19,23 +17,25 @@ public class monster_germs : monster_parents
     {
 
     }
-    void FixedUpdate()
+    protected override void fire()
     {
-        transform.localPosition += new Vector3(0, -0.01f, 0);
-        if (Time.time > nextfireQ)
-            fire();
+        nextfireQ = Time.time + firerateQ + Random.Range(0.3f, 1.0f);
+        //GameObject inst = Instantiate(bullet);
+        //inst.transform.position = transform.position;
+        ////Debug.Log((Vector2)player.transform.position);
+        //inst.GetComponent<enemy_bullet>().toVector = Gamemanager.VectorRotation(
+        //    Gamemanager.PointDirection(transform.position, player.transform.position)
+        //    + Random.Range(-random, random));
+        //inst.GetComponent<enemy_bullet>().speed = Bulletspeed;
 
-    }
-    void fire()
-    {
-        nextfireQ = Time.time + firerateQ + Random.Range(-1.0f, 1.0f);
-        GameObject inst = Instantiate(bullet);
-        inst.transform.position = transform.position;
-        //Debug.Log((Vector2)player.transform.position);
-        inst.GetComponent<enemy_bullet>().toVector = Gamemanager.VectorRotation(
-            Gamemanager.PointDirection(transform.position, player.transform.position)
-            + Random.Range(-random, random));
-        inst.GetComponent<enemy_bullet>().speed = Bulletspeed;
+        for (int i = 1; i <= 3; i++)
+        {
+            GameObject inst = Instantiate(bullet);
+            inst.transform.position = transform.position;
+            inst.GetComponent<enemy_bullet>().toVector = Gamemanager.VectorRotation(Gamemanager.PointDirection(transform.position, player.transform.position) + ((2 - i) * 10));
+            inst.GetComponent<enemy_bullet>().speed = Bulletspeed;
 
+        }
     }
+
 }
