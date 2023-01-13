@@ -21,14 +21,18 @@ public class pain_gauge : MonoBehaviour
     {
         if (a)
         {
-            gauge.value += 0.2f;
-
+            gauge.value += 0.1f;
+            Gamemanager.instance_.gaugescore += 10;
+            Gamemanager.instance_.gaugeText();
         }
         else
         {
-            
-            gauge.value += 0.2f;
-
+            if (gauge.value > 0)
+            {
+                gauge.value -= 0.1f;
+                Gamemanager.instance_.gaugescore -= 10;
+                Gamemanager.instance_.gaugeText();
+            }
         }
     }
 }

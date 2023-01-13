@@ -15,8 +15,8 @@ public class Userlnterface : MonoBehaviour
     {
         if (a)
         {
-            HealthBar.value -= 0.1f;
+            HealthBar.value -= 0.05f;
         }
-        else HealthBar.value += 0.1f;
+        else HealthBar.value += 0.05f;
     }
 }

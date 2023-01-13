@@ -8,7 +8,9 @@ public class Gamemanager : MonoBehaviour
     private static Gamemanager instance = null;
     public playerMove player;
     public int score;
+    public int gaugescore;
     public Text text;
+    public Text gaugetext;
     public Userlnterface Heal;
     private void Start()
     {
@@ -36,6 +38,10 @@ public class Gamemanager : MonoBehaviour
     public void SetText()
     {
         text.text = "Score : " + score.ToString();
+    }
+    public void gaugeText()
+    {
+        gaugetext.text = gaugescore.ToString() + " %";
     }
     // Update is called once per frame
     void Update()

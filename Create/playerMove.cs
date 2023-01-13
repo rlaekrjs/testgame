@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class playerMove : MonoBehaviour
 {
     
     [SerializeField]
     float v_speed = 0.1f;
     Vector2 speedNomal;
-    public int playerHP = 10;
+    public float playerHP = 10;
     public int gauge;
+    public float invincibilityTime = 3;
+    SpriteRenderer sr;
     void Start()
     {
-     
+        
     }
     private void OnEnable()
     {
@@ -34,6 +35,20 @@ public class playerMove : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        invincibilityTime += Time.deltaTime;
+        if (invincibilityTime < 1.5f)
+        {
+            sr = GetComponent<SpriteRenderer>();
+            sr.color = new Color(1, 1, 1, 0.5f);
+        }
+        else
+        {
+            sr = GetComponent<SpriteRenderer>();
+            sr.color = new Color(1, 1, 1, 1);
+        }
+        if (playerHP <= 0)
+            Destroy(gameObject);
 
     }
     private void FixedUpdate()
@@ -59,21 +74,22 @@ public class playerMove : MonoBehaviour
     {
         if (collisionInfo.gameObject.CompareTag("enemy_attack"))
         {
-            playerHP--;
-            Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
+            if (invincibilityTime > 1.5f)
+            {
+                invincibilityTime = 0;
+                playerHP -= 0.5f;
+                Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
+            }
             //플레이어 체력 감소
             Destroy(collisionInfo.gameObject);
             //충돌한 총알 파괴
-            if (playerHP <= 0)
-                Destroy(gameObject);
-            //체력이 0이하일때 몬스터 파괴
         }
-        if (collisionInfo.gameObject.tag.Equals("food"))
+        if (collisionInfo.gameObject.tag.Equals("item"))
         {
             //플레이어가 음식을 먹었을때 체력 회복
             if (playerHP < 10)
             {
-                playerHP++;
+                playerHP+=0.5f;
                 Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(false);
             }
             Destroy(collisionInfo.gameObject);
@@ -81,11 +97,29 @@ public class playerMove : MonoBehaviour
         if (collisionInfo.gameObject.CompareTag("monster"))
         {
             //플레이어가 몬스터와 충돌시 몬스터 파괴 고통게이지 증가 체력 감소
-            playerHP--;
-            Debug.Log(playerHP);
+            invincibilityTime = 0;
+            playerHP -= 0.5f;
             Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
             Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
             Destroy(collisionInfo.gameObject);
         }
+        if (collisionInfo.gameObject.CompareTag("item monster"))
+        {
+            //플레이어가 아이템 몬스터와 충돌시 아이템 몬스터 파괴 체력 감소
+            invincibilityTime = 0;
+            playerHP -= 0.5f;
+            Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
+            Destroy(collisionInfo.gameObject);
+        }
+        if (collisionInfo.gameObject.CompareTag("boss"))
+        {
+            //플레이어가 보스와 충돌시 아이템 몬스터 파괴 체력 감소
+            invincibilityTime = 0;
+            playerHP -= 0.5f;
+            Gamemanager.instance_.GetComponent<Userlnterface>().HealthBar_Update(true);
+            Gamemanager.instance_.GetComponent<pain_gauge>().gauge_Update(true);
+        }
     }
+
+    
 }
